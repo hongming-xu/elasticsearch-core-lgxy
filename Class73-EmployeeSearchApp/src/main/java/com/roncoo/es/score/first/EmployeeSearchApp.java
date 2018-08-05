@@ -27,8 +27,8 @@ public class EmployeeSearchApp {
 		TransportClient client = new PreBuiltTransportClient(settings)
 				.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("ecs"), 9300));
 		
-		prepareData(client);
-//		executeSearch(client);
+//		prepareData(client);
+		executeSearch(client);
 		
 		client.close();
 	
@@ -48,8 +48,17 @@ public class EmployeeSearchApp {
 		
 		SearchHit[] searchHits = response.getHits().getHits();
 		for(int i = 0; i < searchHits.length; i++) {
-			System.out.println(searchHits[i].getSourceAsString()); 
+
+			String json = searchHits[i].getSourceAsString();//map对象转成json
+            System.out.println(json);
+
+            Employee employee = JsonUtil.jsonToObject(json,Employee.class);
+            System.out.println(employee);
 		}
+
+
+
+
 	}
 
 	/**
